@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<!-- https://www.pexels.com/photo/parking-multi-storey-car-park-6517/ -->
+
+<head>
+  <title>Park & Go</title>
+</head>
+
+<style>
+  html {
+    font-size: 100%; // 12px
+  }
+
+
+  body {
+    font: 100% arial, sans-serif;
+    background-image: url("aerial.jpg");
+    background-size: cover;
+    color: #000000;
+  }
+
+  h1 {
+    font: 200% arial, Charcoal, sans-serif;
+    text-align: center;
+    font-variant: small-caps;
+  }
+
+  .deadCentre {
+    margin: auto;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    bottom: 10%;
+    right: 10%;
+  }
+
+  .wrapper {
+    text-align: center;
+  }
+
+  div {
+    margin-top: 10px;
+  }
+
+  .topCorner {
+      position:absolute;
+      top:0;
+      right:0;
+      background-color: black;
+      border: none;
+      color: white;
+      padding: 1% 1%;
+      text-align: center;
+      font-size: 100%;
+      font-variant: small-caps;
+      margin: 0.6% 0.6%;
+      cursor: pointer;
+  }
+  .button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 3% 4%;
+    text-align: center;
+    font-size: 100%;
+    font-variant: small-caps;
+    margin: 0% 0.6%;
+    cursor: pointer;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+</style>
+
+<script src="http://code.jquery.com/jquery-1.7.2.min.js">
+
+
+
+</script>
+<script>
+  var cash = false;
+  var swipe = false;
+  var credit = false;
+
+  function payCheck(that) {
+    if (that.value == "Credit/Debit") {
+      document.getElementById("ifCard").style.display = "block";
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = false;
+      swipe = false;
+      credit = false;
+
+    } else if (that.value == "Cash") {
+      document.getElementById("ifCash").style.display = "block";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = true;
+      swipe = false;
+      credit = false;
+
+    } else if (that.value == "Swipe") {
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "block";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = false;
+      swipe = true;
+      credit = false;
+
+    } else if (that.value == "Enter Card Number") {
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "block";
+      cash = false;
+      swipe = false;
+      credit = true;
+    } else {
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = false;
+      swipe = false;
+      credit = false;
+    }
+
+  }
+
+
+  function validateForm() {
+	var time = document.forms["myForm"]["time"].value;
+    if (time == "") {
+      alert("A ticket must be inserted");
+      return false;
+    } else {
+		var currTime = new Date;
+		var currMins = currTime.getMinutes() + currTime.getHours()*60;
+		var ticketTime = time.split(":");
+		var ticketMins = parseInt(ticketTime[0])*60 + parseInt(ticketTime[1]);
+		if (ticketMins <= currMins){
+		    alert("Sorry, your ticket has expired");
+		    return false;
+		} else {
+			var refund = Math.floor((ticketMins-currMins)/15)*5;
+			if (refund == 0){
+				alert("Your ticket does not have enough time left to be eligible for a refund.  Thank you for parking with us!");
+				return false;
+			} else {
+				alert("Your refund has been processed.  You have received $" + refund + ".00 in return for your ticket's remaining value.  Thank you for parking with us!");
+				return false;
+			}
+		    return false;
+		}
+	    //issue refund and remove ticket from database
+      //window.location.href = ('parking_home.html');
+    }
+  }
+
+
+  function inputs(that) {
+      if (that.value.length == that.maxLength && that.id == "num1") {
+        document.getElementById("num2").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num2"){
+        document.getElementById("num3").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num3"){
+        document.getElementById("num4").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num4"){
+        document.getElementById("num4").blur()
+      }
+  }
+
+//   var container = document.getElementsByClassName("container")[0];
+// container.onkeyup = function(e) {
+//     var target = e.srcElement;
+//     var maxLength = parseInt(target.attributes["maxlength"].value, 10);
+//     var myLength = target.value.length;
+//     if (myLength >= maxLength) {
+//         var next = target;
+//         while (next = next.nextElementSibling) {
+//             if (next == null)
+//                 break;
+//             if (next.tagName.toLowerCase() == "input") {
+//                 next.focus();
+//                 break;
+//             }
+//         }
+//     }
+// }
+function cancel(){
+  var r = confirm('Are you sure you would like to return to the home page?');
+  if(r){
+	window.location.href = 'home.html';
+  }
+  return false;
+}
+</script>
+
+
+<body>
+  <div style="background-color: rgba(255, 255, 255, .8)" class="deadCentre">
+    <a>
+      <button class="topCorner" onclick= "cancel()" > Return </button>
+    </a>
+    <div class="wrapper">
+      <br>
+      <img src="logo.png" width="10%" height="10%">
+    </div>
+    <h1>Ticket Refund</h1>
+
+    <form name="myForm" onsubmit="return validateForm()" method="post">
+	  <div>
+        <table class="center">
+        <tr>
+          <th>Expiration Time:</th>
+          <th><input type="text" name = "time"></th>
+        </tr>
+      </table>
+      </div>
+
+
+      <div class="wrapper">
+        <h4 align="center"> Please insert your ticket to obtain a partial refund, based on your remaining paid time. (Because there is no physical scanner for this assignment, please enter the 24h-format time your ticket expires.)</h4>
+      </div>
+
+
+
+      <div class="wrapper">
+          <button onclick="return validateForm()" class="button"> Issue Refund </button>
+      </div>
+
+
+    </form>
+
+  </div>
+
+</body>
+
+</html>

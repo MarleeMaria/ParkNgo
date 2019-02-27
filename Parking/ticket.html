@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Park & Go</title>
+</head>
+
+<style>
+  html {
+    font-size: 100%; // 12px
+  }
+
+  body {
+    font: 100% arial, sans-serif;
+    background-image: url("aerial.jpg");
+    background-size: cover;
+    color: #000000;
+  }
+
+  h1 {
+    font: 200% arial, Charcoal, sans-serif;
+    text-align: center;
+    font-variant: small-caps;
+  }
+
+  .deadCentre {
+    margin: auto;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    bottom: 10%;
+    right: 10%;
+  }
+
+  .wrapper {
+    text-align: center;
+  }
+
+  div {
+    margin-top: 10px;
+  }
+
+  .topCorner {
+      position:absolute;
+      top:0;
+      right:0;
+      background-color: black;
+      border: none;
+      color: white;
+      padding: 1% 1%;
+      text-align: center;
+      font-size: 100%;
+      font-variant: small-caps;
+      margin: 0.6% 0.6%;
+      cursor: pointer;
+  }
+  .bottomCentre {
+      position:absolute;
+      left: 45%;
+      bottom:0;
+      background-color: black;
+      border: none;
+      color: white;
+      padding: 1% 1%;
+      text-align: center;
+      font-size: 100%;
+      font-variant: small-caps;
+      margin: 0.6% 0.6%;
+      cursor: pointer;
+  }
+  .button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 3% 4%;
+    text-align: center;
+    font-size: 100%;
+    font-variant: small-caps;
+    margin: 0% 0.6%;
+    cursor: pointer;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #ticket {
+    position: absolute;
+    top: 45%;
+    left: 37%;
+    right: 37%;
+    border: 2px solid grey;
+    font: 100% arial, Charcoal, sans-serif;
+    text-align: right;
+
+  }
+
+</style>
+
+<script src="http://code.jquery.com/jquery-1.7.2.min.js">
+
+
+
+</script>
+<script>
+  var postTime = getQueryVariable("time");
+  var postCost = getQueryVariable("cost");
+  var timeNow = getTimeNow();
+  var timeExpires = getTimeExpires(postTime);
+	var cash = getQueryVariable("cash");
+	var swipe = getQueryVariable("swipe");
+	var credit = getQueryVariable("credit");
+	var method = getMethod(cash,swipe,credit);
+
+
+
+  function inputs(that) {
+      if (that.value.length == that.maxLength && that.id == "num1") {
+        document.getElementById("num2").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num2"){
+        document.getElementById("num3").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num3"){
+        document.getElementById("num4").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num4"){
+        document.getElementById("num4").blur()
+      }
+  }
+
+  function cancel(){
+    var r = confirm('Are you sure you would like to return to the home page?');
+    if(r){
+  	window.location.href = 'home.html';
+    }
+    return false;
+  }
+
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+
+function getTimeNow(){
+  var d = new Date();
+	var hour = d.getHours()
+	var minute = d.getMinutes()
+	hour = hour < 10 ? '0' + hour : hour;
+  minute = minute < 10 ? '0' + minute : minute;
+  var timeNow = d.getDate() + "/" + (parseInt(d.getMonth())+1) + "/" + d.getFullYear()
+      + " @ " + hour + ":" + minute;
+  return (timeNow);
+}
+
+function getTimeExpires(postTime){
+
+	var d = new Date();
+
+  let m = d.getMinutes() + parseInt(postTime);
+	let h = Math.floor(m / 60);
+	var hour = (h + d.getHours()) % 24;
+	var extradays = Math.floor((h + d.getHours()) / 24);
+	var day =  d.getDate() + extradays;
+	var minute = m % 60
+	hour = hour < 10 ? '0' + hour : hour;
+  minute = minute < 10 ? '0' + minute : minute;
+	return timeExp = day + "/" + (parseInt(d.getMonth())+1) + "/" + d.getFullYear() + " @ " + hour + ":" + minute;
+
+}
+
+function convertMinsToHrsMins(mins) {
+  let h = Math.floor(mins / 60);
+  let m = mins % 60;
+  h = h < 10 ? '0' + h : h;
+  m = m < 10 ? '0' + m : m;
+  return h + ' Hours ' + m +' Mins';
+
+
+}
+
+function getMethod(cash,swipe,credit) {
+	if (cash) {
+		return "Cash";
+	} else if (swipe) {
+		return "Credit card - swiped";
+	} else if (credit) {
+		return "Credit card - manual entry";
+	} else {
+    return "Error: Payment method unidentified"
+  }
+}
+
+</script>
+
+<body>
+  <div style="background-color: rgba(255, 255, 255, .8)" class="deadCentre">
+    <a>
+      <button class="topCorner" onclick= "cancel()" > Return Home </button>
+    </a>
+    <div class="wrapper">
+      <br>
+      <img src="logo.png" width="10%" height="10%">
+    </div>
+    <h1>Your Ticket</h1>
+    <div id="ticket" style="background-color: rgba(255, 255, 255, 1)" class="wrapper">
+      <b>Time ticket expires: <script>document.write(timeExpires);</script></b>
+		<br>
+		<br>Time ticket was purchased: <script>document.write(timeNow);</script>
+		<br>
+	  <br>Amount of time purchased: <script>document.write(convertMinsToHrsMins(postTime));</script>
+		<br>
+		<br>Amount paid: $<script>document.write(postCost);</script>
+		<br>
+		<br>Payment method: <script>document.write(method);</script>
+
+
+
+  </div>
+
+  <a class="wrapper" href="home.html">
+    <button class="bottomCentre"> Return Home </button>
+  </a>
+</div>
+
+</body>
+
+</html>

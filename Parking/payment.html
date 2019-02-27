@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<!-- https://www.pexels.com/photo/parking-multi-storey-car-park-6517/ -->
+
+<head>
+  <title>Park & Go</title>
+</head>
+
+<style>
+  html {
+    font-size: 100%; // 12px
+  }
+
+  body {
+    font: 100% arial, sans-serif;
+    background-image: url("aerial.jpg");
+    background-size: cover;
+    color: #000000;
+  }
+
+  h1 {
+    font: 200% arial, Charcoal, sans-serif;
+    text-align: center;
+    font-variant: small-caps;
+  }
+
+  .deadCentre {
+    margin: auto;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    bottom: 10%;
+    right: 10%;
+  }
+
+  .wrapper {
+    text-align: center;
+  }
+
+  div {
+    margin-top: 10px;
+  }
+
+  .topCorner {
+      position:absolute;
+      top:0;
+      right:0;
+      background-color: black;
+      border: none;
+      color: white;
+      padding: 1% 1%;
+      text-align: center;
+      font-size: 100%;
+      font-variant: small-caps;
+      margin: 0.6% 0.6%;
+      cursor: pointer;
+  }
+  .button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 3% 4%;
+    text-align: center;
+    font-size: 100%;
+    font-variant: small-caps;
+    margin: 0% 0.6%;
+    cursor: pointer;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+</style>
+
+
+<script>
+  var cash = false;
+  var swipe = false;
+  var credit = false;
+
+  function payCheck(that) {
+    if (that.value == "Credit/Debit") {
+      document.getElementById("ifCard").style.display = "block";
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = false;
+      swipe = false;
+      credit = false;
+
+    } else if (that.value == "Cash") {
+      document.getElementById("ifCash").style.display = "block";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = true;
+      swipe = false;
+      credit = false;
+
+    } else if (that.value == "Swipe") {
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "block";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = false;
+      swipe = true;
+      credit = false;
+
+    } else if (that.value == "Enter Card Number") {
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "block";
+      cash = false;
+      swipe = false;
+      credit = true;
+    } else {
+      document.getElementById("ifCash").style.display = "none";
+      document.getElementById("ifCard").style.display = "none";
+      document.getElementById("ifSwipe").style.display = "none";
+      document.getElementById("ifEnter").style.display = "none";
+      cash = false;
+      swipe = false;
+      credit = false;
+    }
+
+  }
+
+
+  function validateForm() {
+    var x1 = document.forms["myForm"]["fname"].value;
+    var x2 = document.forms["myForm"]["lname"].value;
+    var y = document.forms["myForm"]["datenum"].value;
+    var z1 = document.forms["myForm"]["cardnum1"].value;
+    var z2 = document.forms["myForm"]["cardnum2"].value;
+    var z3 = document.forms["myForm"]["cardnum3"].value;
+    var z4 = document.forms["myForm"]["cardnum4"].value;
+    if (((x1 == "") || (x2 == "") || (y == "") || (z1 == "")|| (z2 == "")|| (z3 == "")|| (z4 == "")) && credit == true) {
+      alert("All credit card info must be filled out");
+      return false;
+    } else if (!(cash || swipe || credit)) {
+      alert("Please choose a payment method");
+      return false;
+    } else {
+      window.location.href = ('ticket.html?&time=' + postTime +'&cost=' + postCost + '&cash=' + cash + '&swipe=' + swipe + '&credit=' + credit);
+      return false;
+    }
+  }
+
+  function inputs(that) {
+      if (that.value.length == that.maxLength && that.id == "num1") {
+        document.getElementById("num2").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num2"){
+        document.getElementById("num3").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num3"){
+        document.getElementById("num4").focus()
+      }
+      else if (that.value.length == that.maxLength && that.id == "num4"){
+        document.getElementById("num4").blur()
+      }
+  }
+
+
+  function cancel()
+  {
+    var r = confirm('Are you sure you would like to return to the home page?');
+    if(r)
+    {
+    window.location.href = 'home.html';
+    }
+    return false;
+  }
+
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+
+var postTime = getQueryVariable("time");
+var postCost = getQueryVariable("cost");
+
+function convertMinsToHrsMins(mins) {
+  let h = Math.floor(mins / 60);
+  let m = mins % 60;
+  h = h < 10 ? '0' + h : h;
+  m = m < 10 ? '0' + m : m;
+  return h + ' Hours ' + m +' Mins';
+
+}
+
+</script>
+
+<body>
+  <div style="background-color: rgba(255, 255, 255, .8)" class="deadCentre">
+      <button class="topCorner" onclick= "cancel()" > Cancel Order </button>
+    <div class="wrapper">
+      <br>
+      <img src="logo.png" width="10%" height="10%">
+    </div>
+    <h1>Payment Options</h1>
+
+    <form name="myForm" onsubmit="return validateForm()" method="post">
+      <div>
+        <table class="center">
+          <tr>
+            <th align="left">Selected Time:</th>
+            <th align="left"><script>document.write(convertMinsToHrsMins(postTime));</script></th>
+            <th><a href="time.html">  Edit Time</th>
+        </tr>
+        <tr>
+          <th align="left">Cost:</th>
+          <th align="left">$<script>document.write(postCost);</script></th>
+        </tr>
+      </table>
+      </div>
+
+      <div class="wrapper">
+        <h4 align="center"> How would you like to pay? </h4>
+
+        <input type="button" class="button" id="check" value="Cash" onclick="payCheck(this);">
+
+        <input type="button" class="button" id="check" value="Credit/Debit" onclick="payCheck(this);">
+      </div>
+
+      <div class="wrapper" id="ifCard" style="display: none;">
+
+        <input type="button" class="button" id="swipe" value="Swipe" onclick="payCheck(this);"> <b>OR</b>
+
+        <input type="button" class="button" id="card" value="Enter Card Number" onclick="payCheck(this);">
+
+      </div>
+
+      <div class="wrapper" id="ifCash" style="display: none;">
+        <h4> Your change. </h4>
+        <img src="gold-coin.jpg" width="10%" height="10%"><br>
+      </div>
+
+
+
+      <div class="wrapper" id="ifEnter" style="display: none;">
+        <table class="center">
+          <tr>
+            <th align="left"><label for="cardname">Card Holder Name: </label></th>
+            <th align="left">
+              <input type="text" id="fname" name="fname" placeholder="First" style="border-style: solid;">
+              <input type="text" id="mname" name="mname" placeholder="M." size=1 style="border-style: solid;">
+              <input type="text" id="lname" name="lname" placeholder="Last" style="border-style: solid;">
+            </th>
+          </tr>
+
+          <tr>
+            <th align="left">Card Number:</th>
+            <th align="left">
+              <input onkeydown="inputs(this)" type="number" id="num1" name="cardnum1"  min=0 max=9999 maxlength="4" style="border-style: solid;"> -
+              <input onkeydown="inputs(this)" type="number" id="num2" name="cardnum2" min=0 max=9999 maxlength="4" style="border-style: solid;"> -
+              <input onkeydown="inputs(this)" type="number" id="num3" name="cardnum3" min=0 max=9999 maxlength="4"  style="border-style: solid;"> -
+              <input onkeydown="inputs(this)" type="number" id="num4" name="cardnum4" min=0 max=9999 maxlength="4" style="border-style: solid;">
+          </th>
+          </tr>
+
+
+          <tr>
+            <th align="left"><label for="datenum">Experation Date:</label></th>
+            <th align="left"><input type="month" id="datenum" name="datenum" min='2018-11' style="border-style: solid;"></th>
+          </tr>
+
+        </table>
+        <br>
+
+      </div>
+
+
+      <div class="wrapper" id="ifSwipe" style="display: none;">
+        <img src="cardswipe.webp" width="17%" height="17%"></br>
+      </div>
+
+      <div class="wrapper">
+          <input type="submit" class="button" value="Print Ticket">
+      </div>
+
+
+    </form>
+
+  </div>
+
+</body>
+
+</html>

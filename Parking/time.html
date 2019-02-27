@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Park & Go</title>
+</head>
+
+<style>
+  html {
+    font-size: 100%; // 12px
+  }
+
+
+  body {
+    font: 100% arial, sans-serif;
+    background-image: url("aerial.jpg");
+    background-size: cover;
+    color: #000000;
+  }
+
+  h1 {
+    font: 200% arial, Charcoal, sans-serif;
+    text-align: center;
+    font-variant: small-caps;
+  }
+
+  .deadCentre {
+    margin: auto;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+  }
+
+  .wrapper {
+    text-align: center;
+  }
+
+  div {
+    margin-top: 10px;
+  }
+
+  .topCorner {
+      position:absolute;
+      top:0;
+      right:0;
+      background-color: black;
+      border: none;
+      color: white;
+      padding: 1% 1%;
+      text-align: center;
+      font-size: 100%;
+      font-variant: small-caps;
+      margin: 0.6% 0.6%;
+      cursor: pointer;
+  }
+  .button {
+    text-align: center;
+    background-color: black;
+    border: none;
+    color: white;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+</style>
+
+  <body>
+    <div style="background-color: rgba(255, 255, 255, .8)" class="deadCentre">
+        <button class="topCorner" onclick= "cancel()" > Cancel Order </button>
+      <div class="wrapper">
+        <br>
+        <img src="logo.png" width="10%" height="10%">
+      </div>
+    <h1>Time Selection</h1>
+        <div class="wrapper" style="float: left; width: 50%; height: 30%;">
+          <h2> 15 Minutes </h2>
+          <div class="wrapper">
+            <button class="button" type="button" onclick="subtract15m()" style="width: 10%; height: 10%;">
+              <h2>-</h2>
+            </button>
+            <button class="button" type="button" onclick="add15m()" style="width: 10%; height: 10%;">
+              <h2>+</h2>
+            </button>
+            <br>
+            <label><h4>$5 per 15m</h4></label>
+          </div>
+        </div>
+
+        <div class="wrapper" style="float: right; width: 50%; height: 30%;">
+          <h2> 30 Minutes </h2>
+          <div class="wrapper">
+            <button class="button" type="button" onclick="subtract30m()" style="width: 10%; height: 10%;">
+              <h2>-</h2>
+            </button>
+            <button class="button" type="button" onclick="add30m()" style="width: 10%; height: 10%;">
+              <h2>+</h2>
+            </button>
+            <br>
+            <label><h4>$10 per 30m</h4></label>
+          </div>
+        </div>
+
+        <div class="wrapper" style="float: left; width: 50%; height: 30%;">
+          <h2> 1 Hour </h2>
+          <div class="wrapper">
+            <button class="button" type="button" onclick="subtract1h()" style="width: 10%; height: 10%;">
+              <h2>-</h2>
+            </button>
+            <button class="button" type="button" onclick="add1h()" style="width: 10%; height: 10%;">
+              <h2>+</h2>
+            </button>
+            <br>
+            <label><h4>$20 per 1h</h4></label>
+          </div>
+        </div>
+
+        <div class="wrapper" style="float: right; width: 50%; height: 30%;">
+          <h2> 3 Hours </h2>
+          <div class="wrapper">
+            <button class="button" type="button" onclick="subtract3h()" style="width: 10%; height: 10%;">
+              <h2>-</h2>
+            </button>
+            <button class="button" type="button" onclick="add3h()" style="width: 10%; height: 10%;">
+              <h2>+</h2>
+            </button>
+            <br>
+            <label><h4>$60 per 3h</h4></label>
+          </div>
+        </div>
+
+      <div>
+        <div class="wrapper">
+          <label style="font-size: 300%;">Time: </label><label id="timeHours" style="font-size: 300%;">0 Hours </label><label id="timeMins" style="font-size: 300%;">0 Mins</label>
+        </div>
+
+        <div class="wrapper">
+          <label id="cost" style="font-size: 200%;">Cost: $0</label>
+        </div>
+
+        <div class="wrapper">
+          <button class="button" type="button" onclick="payment()"><h2>Proceed to Payment</h2></button>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+      var time = 0;
+      var timeMins = 0;
+      var timeHours = 0;
+      var cost = 0;
+      function add15m(func)
+      {
+        time += 15;
+        updateLabel();
+        return false;
+      }
+
+      function subtract15m(func)
+      {
+        if((time - 15) >= 0)
+        {
+          time -= 15;
+          updateLabel();
+        }
+        return false;
+      }
+
+
+      function add30m(func)
+      {
+        time += 30;
+        updateLabel();
+        return false;
+      }
+
+      function subtract30m(func)
+      {
+        if((time - 30) >= 0)
+        {
+          time -= 30;
+          updateLabel();
+        }
+        return false;
+      }
+
+
+      function add1h(func)
+      {
+        time += 60;
+        updateLabel();
+        return false;
+      }
+
+      function subtract1h(func)
+      {
+        if((time - 60) >= 0)
+        {
+          time -= 60;
+          updateLabel();
+        }
+        return false;
+      }
+
+
+      function add3h(func)
+      {
+        time += 180;
+        updateLabel();
+        return false;
+      }
+
+      function subtract3h(func)
+      {
+        if((time - 180) >= 0)
+        {
+          time -= 180;
+          updateLabel();
+        }
+        return false;
+      }
+
+
+      function updateLabel(func)
+      {
+        timeHours = Math.floor(time/60);
+        timeMins = time - (timeHours * 60);
+        cost = Math.floor(time * (1/3));
+        document.getElementById("timeHours").innerText = timeHours + " Hours ";
+        document.getElementById("timeMins").innerText = timeMins + " Mins";
+        document.getElementById("cost").innerText = "Cost: $" + cost;
+        return false;
+      }
+
+
+      function payment(func)
+      {
+    	if(!time == 0)
+      		window.location.href = 'payment.html?&time=' + time +'&cost=' + cost;
+      	else
+      		alert("Time cannot be 0!");
+      }
+
+      function cancel()
+      {
+        var r = confirm('Are you sure you would like to return to the home page?');
+        if(r)
+        {
+        window.location.href = 'home.html';
+        }
+        return false;
+      }
+    </script>
+
+  </body>
+
+</html>
